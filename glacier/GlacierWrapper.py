@@ -982,6 +982,7 @@ using %s MB parts to upload." % part_size)
         total_size = 0
         reader = None
         mmapped_file = None
+        f = None
         if not stdin:
             if not file_name:
                 raise InputException(
@@ -1185,7 +1186,8 @@ using %s MB parts to upload." % part_size)
             self.logger.debug(msg)
 
         writer.close()
-        f.close()
+        if f is not None:
+            f.close()
         current_time = time.time()
         overall_rate = int(writer.uploaded_size/(current_time - start_time))
         msg = 'Wrote %s. Rate %s/s.\n' % (self._size_fmt(writer.uploaded_size),
